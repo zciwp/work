@@ -1,0 +1,293 @@
+@charset "utf-8";
+/*Variables*/
+$white:#FFFFFF;
+$margin10:10px;
+$c:center;
+$orange:#e57600;
+.test_1{ color:$white}
+.test_2{ padding:$margin10; margin:$margin10/2}
+
+/*Nesting*/
+table.test_3{ 
+	margin:$margin10;
+	td.test_4{ text-align: $c}
+}
+li{
+	font:{
+		family:serif;
+		size:12px;
+	}
+}
+
+/*mixins*/
+@mixin table-scaffolding{
+	th{ 
+		text-align:center;
+		font-weight: bold;
+	}
+	td,th{
+		padding:2px
+	}
+}
+
+@mixin left($dist){
+	float: left;
+	margin-left: $dist;
+}
+
+.test_5{
+	@include left(10px);
+	@include table-scaffolding;
+}
+
+/*Selector Inheritance*/
+.error{
+	color:$orange;
+	border: 1px #f00;
+}
+.error.intrusion{
+	font-size: 1.3em;
+	font-weight:bold;
+}
+
+.warning{
+	@extend .error;
+	border-width: 3px;
+}
+
+
+/*test*/
+@mixin borderRadius($num){ -webkit-border-radius:$num; -moz-border-radius:$num}
+.test_6{@include borderRadius(10px)}
+
+@mixin png8alpha($pic_png){ background: url($pic_png); _background:none; _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( enabled=true, sizingMethod=noscale, src=#{$pic_png});}
+.test_7{ @include png8alpha("http://mat1.gtimg.com/www/mb/img/v1/b1_wide_130507.png")}
+
+
+
+/*Control Directive @if*/ 
+p {
+  @if 1 + 1 == 2 { border: 1px solid;  }
+  @if 5 < 3      { border: 2px dotted; }
+  @if null       { border: 3px double; }
+}
+// is compiled to: p {border: 1px solid; }
+
+$type: monster;
+p {
+  @if $type == ocean {
+    color: blue;
+  } @else if $type == matador {
+    color: red;
+  } @else if $type == monster {
+    color: green;
+  } @else {
+    color: black;
+  }
+}
+// is compiled to:p {color: green; }
+
+
+
+/*Control Directive @for*/
+@for $i from 1 through 3 {
+  .item-#{$i} { width: 2em * $i; }
+} 
+/*is compiled to:
+.item-1 {
+  width: 2em; }
+.item-2 {
+  width: 4em; }
+.item-3 {
+  width: 6em; }
+*/
+
+
+
+/*Control Directive @each*/
+@each $animal in puma, sea-slug, egret, salamander {
+  .#{$animal}-icon {
+    background-image: url('/images/#{$animal}.png');
+  }
+}
+
+/*is compiled to:
+.puma-icon {
+  background-image: url('/images/puma.png'); }
+.sea-slug-icon {
+  background-image: url('/images/sea-slug.png'); }
+.egret-icon {
+  background-image: url('/images/egret.png'); }
+.salamander-icon {
+  background-image: url('/images/salamander.png'); }
+*/
+
+/*Control Directive @while*/
+$i: 6;
+@while $i > 0 {
+  .item-#{$i} { width: 2em * $i; }
+  $i: $i - 2;
+}
+
+/*is compiled to:
+.item-6 {
+  width: 12em; }
+
+.item-4 {
+  width: 8em; }
+
+.item-2 {
+  width: 4em; }
+*/
+
+
+// ptest
+.ptest{ background:url(../../img/icon/icon_1.png); width:300px; height: 100px;}
+.ptest_2{ background:url(../../img/icon/icon_2.png); width:200px; height: 100px}
+.ptest_3{ color: $orange}
+
+$color:#f00,#000,#fff;
+// through 包括end参数的边界值，即1 through 3 那么就会是循环 3 次
+@for $i from 1 through length($color){
+  .ztest_#{$i}{ width:30px; height: 30px; background:blue; margin: $margin10; color: nth($color,$i);}
+}
+
+/*
+to 不包括end参数的边界值，即1 to 3 那么就会是循环 2 次
+@for $i from 1 to length($color){
+  .ztest_#{$i}{ width:200px; height: 200px; background:blue; color: nth($color,$i);}
+}
+*/
+
+
+// $ptest_4:false article !default;
+// @if (nth($ptest_4,1)){ .ptest{ width:200px}}
+// @else{ .ptest{ width:100px}}
+
+$ptest_4:true article;
+$ptest_4:false article!default;
+ $list: "item-1.1" "item-1.2" "item-1.3", 
+        "item-2.1" "item-2.2" "item-2.3",
+        "item-3.1" "item-3.2" "item-3.3";
+$list: 100px 200px,
+       300px 400px;
+@if nth($ptest_4,1){ .ptest{ width: 200px}}
+@else{ .ptest{ width:200px}}
+.ptest_5{ width: nth(nth($list, 1),1)}
+
+
+// 渐变
+$type:linear;
+$origin:top;
+$startColor:#000000;
+$endColor:#FFFFFF;
+@mixin gradient($type,$origin,$startColor,$endColor){ 
+  background:-webkit-#{$type}-gradient($origin,$startColor,$endColor);
+}
+
+$type_2:linear;
+$origin_2:top;
+$startColor_2:#f00;
+$endColor_2:#333;
+@mixin gradient_2($arg...){ 
+  @if(length($arg) == 4){
+    background:-webkit-#{$type_2}-gradient($origin_2,$startColor_2,$endColor_2);
+  }
+}
+
+
+
+
+
+
+
+// 占位符选择器
+%holder{ border:3px solid #666}
+#context a%extreme {
+  color: blue;
+  font-weight: bold;
+  font-size: 2em;
+}
+@mixin holder_2{ border:3px solid #999}
+
+
+
+$base-font-size: 16 !default;
+
+@mixin emCalc($props,$sizes,$base:$base-font-size){
+    $values: ();
+    $sublists: false;
+
+    @each $s in $sizes {
+        //循环列表中多个属性值，例如text-shadow属性
+        @if type-of($s) == list {
+            $sublists: true;
+            $vv: ();
+            @each $ss in $s {
+                $vv: append($vv,if(type-of($ss) == number, #{$ss / $base}em, $ss));
+            }
+            $values: append($values,join((), $vv));
+        }
+        @else {
+            $values: append($values,if(type-of($s) == number, #{$s / $base}em, $s));
+        }
+    }
+    $value: join((), $values, if($sublists,comma,space));
+    @each $prop in $props {#{$prop}: $value}
+}
+
+@function delstr_keepnum($str){
+  @return $str / ($str*0 + 1);
+}
+
+$zc_haha:true;
+@mixin test_zc($sss){
+  $zc_haha:true;
+  @if(type-of($sss) == number){
+    $zc_haha:false;
+  }
+  @if($zc_haha){
+    width:100px
+  }
+  @else{
+    width:200px
+  }
+}
+
+@mixin test_zc2(){
+  $zc_haha:true;
+  @if($zc_haha){
+    width:300px;
+  } 
+  @else{
+    width:400px
+  }
+}
+
+
+// 局部和全局变量对比开始
+// 对比1
+$color_1: white;
+@mixin colors() {
+  $color_1: blue;
+  background-color: $color_1;
+  @content;
+  border-color: $color_1;
+}
+
+
+// 对比2
+$color_2: white;
+@mixin colors_2($color_2: green) {
+  background-color: $color_2;
+  @content;
+  border-color: $color_2;
+}
+
+// 局部和全局变量对比结束
+
+
+
+
+
+
