@@ -1,0 +1,164 @@
+@charset "utf-8";
+/*Variables*/
+.test_1 {
+  color: white; }
+
+.test_2 {
+  padding: 10px;
+  margin: 5px; }
+
+/*Nesting*/
+table.test_3 {
+  margin: 10px; }
+  table.test_3 td.test_4 {
+    text-align: center; }
+
+li {
+  font-family: serif;
+  font-size: 12px; }
+
+/*mixins*/
+.test_5 {
+  float: left;
+  margin-left: 10px; }
+  .test_5 th {
+    text-align: center;
+    font-weight: bold; }
+  .test_5 td, .test_5 th {
+    padding: 2px; }
+
+/*Selector Inheritance*/
+.error, .warning {
+  color: #e57600;
+  border: 1px #f00; }
+
+.error.intrusion, .intrusion.warning {
+  font-size: 1.3em;
+  font-weight: bold; }
+
+.warning {
+  border-width: 3px; }
+
+/*test*/
+.test_6 {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px; }
+
+.test_7 {
+  background: url("http://mat1.gtimg.com/www/mb/img/v1/b1_wide_130507.png");
+  _background: none;
+  _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=noscale, src=http://mat1.gtimg.com/www/mb/img/v1/b1_wide_130507.png); }
+
+/*Control Directive @if*/
+p {
+  border: 1px solid; }
+
+p {
+  color: green; }
+
+/*Control Directive @for*/
+.item-1 {
+  width: 2em; }
+
+.item-2 {
+  width: 4em; }
+
+.item-3 {
+  width: 6em; }
+
+/*is compiled to:
+.item-1 {
+  width: 2em; }
+.item-2 {
+  width: 4em; }
+.item-3 {
+  width: 6em; }
+*/
+/*Control Directive @each*/
+.puma-icon {
+  background-image: url("/images/puma.png"); }
+
+.sea-slug-icon {
+  background-image: url("/images/sea-slug.png"); }
+
+.egret-icon {
+  background-image: url("/images/egret.png"); }
+
+.salamander-icon {
+  background-image: url("/images/salamander.png"); }
+
+/*is compiled to:
+.puma-icon {
+  background-image: url('/images/puma.png'); }
+.sea-slug-icon {
+  background-image: url('/images/sea-slug.png'); }
+.egret-icon {
+  background-image: url('/images/egret.png'); }
+.salamander-icon {
+  background-image: url('/images/salamander.png'); }
+*/
+/*Control Directive @while*/
+.item-6 {
+  width: 12em; }
+
+.item-4 {
+  width: 8em; }
+
+.item-2 {
+  width: 4em; }
+
+/*is compiled to:
+.item-6 {
+  width: 12em; }
+
+.item-4 {
+  width: 8em; }
+
+.item-2 {
+  width: 4em; }
+*/
+.ptest {
+  background: url(../../img/icon/icon_1.png);
+  width: 300px;
+  height: 100px; }
+
+.ptest_2 {
+  background: url(../../img/icon/icon_2.png);
+  width: 200px;
+  height: 100px; }
+
+.ptest_3 {
+  color: #e57600; }
+
+.ztest_1 {
+  width: 30px;
+  height: 30px;
+  background: blue;
+  margin: 10px;
+  color: red; }
+
+.ztest_2 {
+  width: 30px;
+  height: 30px;
+  background: blue;
+  margin: 10px;
+  color: black; }
+
+.ztest_3 {
+  width: 30px;
+  height: 30px;
+  background: blue;
+  margin: 10px;
+  color: white; }
+
+/*
+to 不包括end参数的边界值，即1 to 3 那么就会是循环 2 次
+@for $i from 1 to length($color){
+  .ztest_0{ width:200px; height: 200px; background:blue; color: nth($color,$i);}
+}
+*/
+.ptest {
+  width: 200px; }
+
+.ptest_5 {
+  width: 100px; }
